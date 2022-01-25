@@ -32,6 +32,7 @@ class Cors implements FilterInterface
         if($method == "OPTIONS"){
             die();
         }
+
     }
  
     /**

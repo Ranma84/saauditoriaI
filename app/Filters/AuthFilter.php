@@ -27,10 +27,9 @@ class AuthFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $key = getenv('JWT_SECRET');
-        //$header = $request->getHeader("Authorization");
         $header = apache_request_headers()["Authorization"];
         $token = null;
- 
+        
         // extract the token from the header
         if(!empty($header)) {
             if (preg_match('/Bearer\s(\S+)/', $header, $matches)) {
@@ -42,7 +41,7 @@ class AuthFilter implements FilterInterface
         if(is_null($token) || empty($token)) {
             $response = service('response');
             $response->setBody('Access denied');
-            $response->setStatusCode(401);
+            $response->setStatusCode(40133);
             return $response;
         }
  

@@ -22,13 +22,13 @@ class Login extends BaseController
         $user = $userModel->where('email', $email)->first();
 
         if(is_null($user)) {
-            return $this->respond(['error' => 'Invalid username or password.'], 401);
+            return $this->respond(['error' => 'Invalid username or password1.'], 401);
         }
   
         $pwd_verify = password_verify($password, $user['password']);
   
         if(!$pwd_verify) {
-            return $this->respond(['error' => 'Invalid username or password.'], 401);
+            return $this->respond(['error' => 'Invalid username or password2.'], 401);
         }
  
         $key = getenv('JWT_SECRET');
@@ -56,7 +56,11 @@ class Login extends BaseController
  
         $response = [
             'message' => 'Login Succesful',
-            'token' => $token
+            'email' => $user['email'],
+            'user'=> $user['user'],
+            'rol' => $user['rol'],
+            'estado' => $user['estado'],
+            'token' => $token,
         ];
          
         return $this->respond($response, 200);
