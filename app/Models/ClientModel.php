@@ -4,18 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class ClientModel extends Model
 {
 
     protected $DBGroup          = 'default';
-    protected $table            = 'users';
-    protected $primaryKey       = 'id';
+    protected $table            = 'client';
+    protected $primaryKey       = 'ruc';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['idempresa','usuario','email', 'password'];
+    protected $allowedFields    = ['nombreComercial','estado','email', 'telefono','contacto'];
 
     // Dates
     protected $useTimestamps = true;
