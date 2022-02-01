@@ -8,7 +8,7 @@ $routes = Services::routes();
 $routes->group("api", function ($routes) {
     $routes->post("register", "Register::index");
     $routes->post("login", "Login::index");
-    $routes->get("users", "User::index", ['filter' => 'authFilter']);
+    $routes->get("user", "User::index");
 });
 
 // Load the system's routing file first, so that the app and ENVIRONMENT

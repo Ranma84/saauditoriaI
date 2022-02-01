@@ -35,7 +35,7 @@ class Database extends Config
         'hostname' => 'localhost',
         'username' => 'usuario1',
         'password' => '123456789',
-        'database' => 'DBAuditoria',
+        'database' => 'Auditoria',
         'DBDriver' => 'sqlsrv',
         'DBPrefix' => '',
         'pConnect' => false,

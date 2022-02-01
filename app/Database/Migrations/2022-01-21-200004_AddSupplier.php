@@ -9,13 +9,19 @@ class AddSupplier extends Migration
     public function up()
     {
         $this->forge->addField([
-            'idClient' => [
-                'type' => 'NVARCHAR',
-                'constraint' => 15,
-            ],
             'ruc' => [
                 'type' => 'NVARCHAR',
                 'constraint' => 15
+            ],
+            'idclient' => [
+                'type' => 'NVARCHAR',
+                'constraint' => 15,
+                'null' => true
+            ],
+            'idSegmento' => [
+                'type' => 'INT',
+                'constraint' => 255,
+                'unsigned' => true,
             ],
             'razonSocial' => [
                 'type' => 'NVARCHAR',
@@ -81,6 +87,10 @@ class AddSupplier extends Migration
                 'type' => 'NVARCHAR',
                 'constraint' => '150',
             ],
+            'codigoActivacion' => [
+                'type' => 'NVARCHAR',
+                'constraint' => '150',
+            ],
             'estado' => [
                 'type' => 'TINYINT',
                 'null' => true
@@ -114,11 +124,12 @@ class AddSupplier extends Migration
             ],
         ]);
         $this->forge->addPrimaryKey(['idClient','ruc']);
-        $this->forge->createTable('Supplier');
+        $this->forge->addForeignKey('idclient', 'client', 'ruc','SET NULL','SET NULL');
+        $this->forge->createTable('supplier');
     }
 
     public function down()
     {
-        $this->forge->dropTable('Supplier');
+        $this->forge->dropTable('supplier');
     }
 }

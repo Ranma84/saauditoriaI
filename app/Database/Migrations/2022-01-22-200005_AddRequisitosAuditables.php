@@ -4,12 +4,10 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AddUser extends Migration
+class AddRequisitosAuditables extends Migration
 {
     public function up()
     {
-        $this->db->disableForeignKeyChecks();
-        
         $this->forge->addField([
             'id' => [
                 'type' => 'BIGINT',
@@ -17,43 +15,49 @@ class AddUser extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'idclient' => [
-                'type' => 'NVARCHAR',
-                'constraint' => 15,
-                'null' => true
-            ],
-            'idCreador' => [
-                'type' => 'BIGINT',
+            'idsegmento' => [
+                'type' => 'INT',
                 'constraint' => 255,
                 'unsigned' => true,
                 'null' => true
             ],
-            'user' => [
+            'idlistas' => [
+                'type' => 'INT',
+                'constraint' => 255,
+                'unsigned' => true,
+                'null' => true
+            ],
+            'idgrupo' => [
+                'type' => 'INT',
+                'constraint' => 255,
+                'unsigned' => true,
+                'null' => true
+            ],
+            'idclient' => [
+                'type' => 'INT',
+                'constraint' => 255,
+                'unsigned' => true,
+                'null' => true
+            ],
+            'valor' => [
+                'type' => 'FLOAT',
+                'null' => true
+            ],
+            'question' => [
                 'type' => 'NVARCHAR',
                 'unique' => true,
                 'constraint' => '255',
             ],
-            'email' => [
-                'type' => 'NVARCHAR',
-                'unique' => true,
-                'constraint' => '255',
+            'respuesta' => [
+                'type' => 'INT',
+                'null' => true
             ],
-            'telefono' => [
-                'type' => 'NVARCHAR',
-                'unique' => true,
-                'constraint' => '10',
-            ],
-            'password' => [
-                'type' => 'NVARCHAR',
-                'constraint' => '250',
+            'archivo' => [
+                'type' => 'INT',
+                'null' => true
             ],
             'estado' => [
                 'type' => 'TINYINT',
-                'null' => true
-            ],
-            'rol' => [
-                'type' => 'INT',
-                'constraint' => '25',
                 'null' => true
             ],
             'created_at' => [
@@ -69,15 +73,13 @@ class AddUser extends Migration
                 'null' => true
             ],
         ]);
-        
-        $this->forge->addPrimaryKey('id');        
-        $this->forge->addForeignKey('idclient', 'client', 'ruc','SET NULL','SET NULL');
-        $this->forge->createTable('users');
-        $this->db->enableForeignKeyChecks();   
+        $this->forge->addPrimaryKey('id');
+        $this->forge->addForeignKey('idgrupo', 'grupo','id');
+        $this->forge->createTable('requisitosAuditables');
     }
 
     public function down()
     {
-        $this->forge->dropTable('users');
+        $this->forge->dropTable('requisitosAuditables');
     }
 }

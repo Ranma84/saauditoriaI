@@ -4,19 +4,30 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AddRol extends Migration
+class AddListas extends Migration
 {
     public function up()
     {
         $this->forge->addField([
             'id' => [
                 'type' => 'INT',
+                'constraint' => 255,
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'rol' => [
+            'idsegmento' => [
+                'type' => 'INT',
+                'constraint' => 255,
+                'unsigned' => true,
+                'null' => true
+            ],
+            'idclient' => [
                 'type' => 'NVARCHAR',
-                'unique' => true,
+                'constraint' => 15,
+                'null' => true
+            ],
+            'nombre' => [
+                'type' => 'NVARCHAR',
                 'constraint' => '255',
             ],
             'estado' => [
@@ -37,11 +48,12 @@ class AddRol extends Migration
             ],
         ]);
         $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('rol');
+        $this->forge->addForeignKey('idsegmento','segmento','id','SET NULL','SET NULL');
+        $this->forge->createTable('listas');
     }
 
     public function down()
     {
-        $this->forge->dropTable('rol');
+        $this->forge->dropTable('listas');
     }
 }
