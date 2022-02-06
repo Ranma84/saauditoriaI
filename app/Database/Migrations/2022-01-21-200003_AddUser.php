@@ -26,6 +26,18 @@ class AddUser extends Migration
                 'unsigned' => true,
                 'null' => true
             ],
+            'idUpdate' => [
+                'type' => 'BIGINT',
+                'constraint' => 255,
+                'unsigned' => true,
+                'null' => true
+            ],
+            'idDelete' => [
+                'type' => 'BIGINT',
+                'constraint' => 255,
+                'unsigned' => true,
+                'null' => true
+            ],
             'user' => [
                 'type' => 'NVARCHAR',
                 'unique' => true,

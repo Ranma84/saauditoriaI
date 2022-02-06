@@ -27,7 +27,6 @@ class Register extends BaseController
                 'telefono'    => $this->request->getVar('telefono'),
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
             ];
-			print_r($data);
 			if ($model->save($data)) {
 			 return $this->respond(['message' => 'Registered Successfully'], 200);
 			} else {

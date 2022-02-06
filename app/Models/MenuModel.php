@@ -4,21 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class MenuModel extends Model
 {
-
     protected $DBGroup          = 'default';
-    protected $table            = 'users';
+    protected $table            = 'menus';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['idclient','user','email','telefono','estado','idrol','password','idCreador'];
+    protected $allowedFields    = ['idrol','nombre_menu','url'];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -40,31 +39,4 @@ class UserModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    function insert($row) {
-		$sql = 'CALL userInsert(?,?,?,?,?,?,?)';
-		$result = $this->db->query($sql,$row);	
-		if ($result) {
-			return true;
-		}
-		return false;
-	}
-
-    function update($row) {
-		$sql = 'CALL userUpdate(?,?,?,?,?,?,?,?)';
-		$result = $this->db->query($sql,$row);	
-		if ($result) {
-			return true;
-		}
-		return false;
-	}
-
-    function delete($row) {
-		$sql = 'CALL userDelete(?,?)';
-		$result = $this->db->query($sql,$row);	
-		if ($result) {
-			return true;
-		}
-		return false;
-	}
 }
