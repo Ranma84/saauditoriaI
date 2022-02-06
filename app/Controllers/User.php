@@ -9,7 +9,7 @@ use \Firebase\JWT\JWT;
 
 class User extends BaseController
 {
-    use ResponseTrait;
+	use ResponseTrait;	
       
     public function index()
     {
@@ -40,7 +40,7 @@ class User extends BaseController
                 'idDelete'=> $this->request->getVar('idDelete')
             ];
             if(isset($data['idDelete']) && !empty($data['idDelete'])){
-                 $userModel->delete($id, $data);
+                 $userModel->dbodelete($id, $data);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);
@@ -51,6 +51,7 @@ class User extends BaseController
             ];
             return $this->fail($response , 409);  
     }
+	}
 
     public function update(){
         $rules = [
@@ -86,7 +87,7 @@ class User extends BaseController
                 else{
                     $data['idclient']='';        
                 }
-                $userModel->update($data);
+                $userModel->dboupdate($data);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);
@@ -97,6 +98,7 @@ class User extends BaseController
             ];
             return $this->fail($response , 409);
         }
+	}
 
     public function insert(){
         $rules = [
@@ -121,7 +123,7 @@ class User extends BaseController
             if(isset($data['user']) && !empty($data['user'])){
                 if(!empty($idcliente))
                     $data['idclient']=$idcliente;
-                    $userModel->insert($id, $data);
+                    $userModel->dboinsert($id, $data);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);
@@ -132,7 +134,6 @@ class User extends BaseController
             ];
             return $this->fail($response , 409);
         }
-
     }
 
 }

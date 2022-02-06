@@ -5,6 +5,16 @@ namespace Config;
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
+/*
+$routes->group('api', function ($routes) {
+    $routes->post('register', 'Register::index');
+    $routes->post('login', 'Login::index');
+    $routes->get('user', 'User::index');
+	$routes->get('user/(:num)','User::getid/$1');
+});
+*/
+
+
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
 if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
@@ -32,15 +42,6 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->post('login', 'Login::index');
-
-
-$routes->group('api', function ($routes) {
-    $routes->post('register', 'Register::index');
-    $routes->post('login', 'Login::index');
-    $routes->get('user', 'User::index');
-	$routes->get('user/(:num)','User::getid/$1');
-});
 
 
 /*

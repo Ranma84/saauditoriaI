@@ -41,7 +41,7 @@ class UserModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function insert($row) {
+    function dboinsert($row) {
 		$sql = 'CALL userInsert(?,?,?,?,?,?,?)';
 		$result = $this->db->query($sql,$row);	
 		if ($result) {
@@ -50,7 +50,7 @@ class UserModel extends Model
 		return false;
 	}
 
-    function update($row) {
+    function dboupdate($row) {
 		$sql = 'CALL userUpdate(?,?,?,?,?,?,?,?)';
 		$result = $this->db->query($sql,$row);	
 		if ($result) {
@@ -59,7 +59,7 @@ class UserModel extends Model
 		return false;
 	}
 
-    function delete($row) {
+    function dbodelete($row) {
 		$sql = 'CALL userDelete(?,?)';
 		$result = $this->db->query($sql,$row);	
 		if ($result) {
