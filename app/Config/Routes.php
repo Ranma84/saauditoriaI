@@ -5,14 +5,12 @@ namespace Config;
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
-/*
+
 $routes->group('api', function ($routes) {
     $routes->post('register', 'Register::index');
     $routes->post('login', 'Login::index');
-    $routes->get('user', 'User::index');
-	$routes->get('user/(:num)','User::getid/$1');
 });
-*/
+
 
 
 // Load the system's routing file first, so that the app and ENVIRONMENT

@@ -45,12 +45,10 @@ class AddUser extends Migration
             ],
             'email' => [
                 'type' => 'NVARCHAR',
-                'unique' => true,
                 'constraint' => '255',
             ],
             'telefono' => [
                 'type' => 'NVARCHAR',
-                'unique' => true,
                 'constraint' => '10',
             ],
             'password' => [

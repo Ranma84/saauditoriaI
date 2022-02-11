@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ClientModel extends Model
+class SupplierModel extends Model
 {
 
     protected $DBGroup          = 'default';
@@ -42,41 +42,4 @@ class ClientModel extends Model
     protected $afterDelete    = [];
 
 
-    function dboselect($id) {
-        $builder = $this->db->table('client');
-        $builder->select('client.ruc,client.razonSocial,client.nombreComercial,users.user');
-        $builder->join('users', 'users.idclient = client.ruc');
-        $builder->where('client.ruc',$id);
-        return $builder->get()->getRow(); 
-	}
-
-    function dboinsert($row) {
-		$sql = "EXEC clientInsert '$row[ruc]','$row[razonSocial]','$row[nombreComercial]','$row[user]','$row[password]','$row[idCreador]'";
-        $result = $this->db->query($sql);	
-		if ($result) {
-			return true;
-		}
-		return false;
-	}
-
-    function dboupdate($row) {
-		$sql = 'CALL clientUpdate(?,?,?,?,?,?,?,?)';	
-        
-
-
-        $result = $this->db->query($sql,$row);	
-		if ($result) {
-			return true;
-		}
-		return false;
-	}
-
-    function dbodelete($row) {
-		$sql = 'CALL clientDelete(?,?)';
-		$result = $this->db->query($sql,$row);	
-		if ($result) {
-			return true;
-		}
-		return false;
-	}
 }
