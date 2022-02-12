@@ -8,14 +8,14 @@ class SupplierModel extends Model
 {
 
     protected $DBGroup          = 'default';
-    protected $table            = 'client';
+    protected $table            = 'supplier';
     protected $primaryKey       = 'ruc';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['ruc','razonSocial','nombreComercial'];
+    protected $allowedFields    = ['ruc,razonSocial','nombreComercial','nombrePersonaContacto','TelefonoPersonaContacto'];
 
     // Dates
     protected $useTimestamps = true;

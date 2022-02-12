@@ -4,22 +4,22 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\ClientModel;
+use App\Models\SupplierModel;
 use \Firebase\JWT\JWT;
 
-class Client extends BaseController
+class Supplier extends BaseController
 {
 	use ResponseTrait;	
       
     public function index()
     {
-        $clients = new ClientModel;
-        return $this->respond($clients->select('ruc,razonSocial,nombreComercial')->findAll(), 200);
+        $supplier = new SupplierModel;
+        return $this->respond($supplier->select('ruc,razonSocial,nombreComercial,nombrePersonaContacto,TelefonoPersonaContacto')->findAll(), 200);
     }
 	
 	public function get($id=null){
-        $clients = new ClientModel;
-        $lista=$clients->dboselect($id);
+        $supplier = new SupplierModel;
+        $lista=$supplier->dboselect($id);
         if(!empty($lista)){
             return $this->respond($lista, 200);
         }
@@ -32,7 +32,7 @@ class Client extends BaseController
             'idDelete' => ['rules' => 'required']
         ];
         if($this->validate($rules)){
-            $ClientModel = new ClientModel();
+            $SupplierModel = new SupplierModel();
             $id = $this->request->getVar('id');
             $idDelete=$this->request->getVar('idDelete'); 
             $data = [
@@ -40,7 +40,7 @@ class Client extends BaseController
                 'idDelete'=> $this->request->getVar('idDelete')
             ];
             if(isset($data['idDelete']) && !empty($data['idDelete'])){
-                 $ClientModel->dbodelete($id, $data);
+                 $SupplierModel->dbodelete($id, $data);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);
@@ -63,7 +63,7 @@ class Client extends BaseController
             'idUpdate' => [ 'label' => 'required']
         ];
         if($this->validate($rules)){
-            $ClientModel = new ClientModel();
+            $SupplierModel = new SupplierModel();
             $id = $this->request->getVar('id');
             $idcliente=$this->request->getVar('idclient');
             
@@ -87,7 +87,7 @@ class Client extends BaseController
                 else{
                     $data['idclient']='';        
                 }
-                $ClientModel->dboupdate($data);
+                $SupplierModel->dboupdate($data);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);
@@ -109,18 +109,17 @@ class Client extends BaseController
             'password' => [ 'label' => 'required']
         ];
         if($this->validate($rules)){
-            $ClientModel = new ClientModel();
-            $password=$this->generador();
+            $SupplierModel = new SupplierModel();
             $data = [
                 'ruc'=> $this->request->getVar('ruc'),
                 'razonSocial' => $this->request->getVar('razonSocial'),
                 'nombreComercial'  => $this->request->getVar('nombreComercial'),
                 'user'  => $this->request->getVar('user'),
-                'password'  => password_hash($password, PASSWORD_DEFAULT),
+                'password'  => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
                 'idCreador'  => 0 //$this->request->getVar('idCreador')
             ];
             if(isset($data['ruc']) && !empty($data['ruc'])){
-                $ClientModel->dboinsert($data);
+                $SupplierModel->dboinsert($data);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);
@@ -131,17 +130,6 @@ class Client extends BaseController
             ];
             return $this->fail($response , 409);
         }
-    }
-
-    public function generador(){
-        $comb = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&/()=-+?[]';
-        $pass = ''; 
-        $combLen = strlen($comb) - 1; 
-        for ($i = 0; $i < 8; ++$i) {
-            $n = rand(0, $combLen);
-            $pass.=$comb[$n];
-        }
-        return $this->respond(['estado' =>$pass], 200);
     }
 
 }

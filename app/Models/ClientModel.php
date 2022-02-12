@@ -60,7 +60,7 @@ class ClientModel extends Model
 	}
 
     function dboupdate($row) {
-		$sql = 'CALL clientUpdate(?,?,?,?,?,?,?,?)';	
+		$sql = 'EXEC clientUpdate(?,?,?,?,?,?,?,?)';	
         
 
 
@@ -72,8 +72,17 @@ class ClientModel extends Model
 	}
 
     function dbodelete($row) {
-		$sql = 'CALL clientDelete(?,?)';
+		$sql = 'EXEC clientDelete(?,?)';
 		$result = $this->db->query($sql,$row);	
+		if ($result) {
+			return true;
+		}
+		return false;
+	}
+
+    function dboenviomail() {
+		$sql = 'EXEC enviomail';
+		$result = $this->db->query($sql);	
 		if ($result) {
 			return true;
 		}
