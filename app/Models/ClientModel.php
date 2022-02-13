@@ -51,13 +51,25 @@ class ClientModel extends Model
 	}
 
     function dboinsert($row) {
-		$sql = "EXEC clientInsert '$row[ruc]','$row[razonSocial]','$row[nombreComercial]','$row[user]','$row[password]','$row[idCreador]'";
-        $result = $this->db->query($sql);	
+       $sql = "EXEC [dbo].[clientInsert] @ruc = N'$row[ruc]', @razonSocial = N'$row[razonSocial]', @nombreComercial = N'$row[nombreComercial]',@user = N'$row[user]', @vigencia = $row[vigencia], @correo = N'$row[correo]', @password = N'$row[password]', @idCreador = $row[idCreador], @mail = N'$row[mail]', @consultor = $row[consultor], @terminos = N'$row[terminos]'";
+       $result = $this->db->query($sql,$row);	
 		if ($result) {
 			return true;
 		}
 		return false;
 	}
+
+    function dbosegmentacionInsert($id,$auditor,$array) {
+        foreach ($array as &$valor) {
+            $row=(array)$valor;
+            $sql = "EXEC [dbo].[segmentacionInsert] @idruc = N'$id', @Nombre = N'$row[segmentos]', @tipo = N'r2',@precio = N'$row[costo]', @plazoRegistroPago = $row[FAC], @plazoIngresoRegistro = N'$row[cyei]', @plazoCierreAuditoria = N'$row[FDRegistro]', @plazoCalificacionEntregaInforme = $row[FCAuditoria], @auditoriaCampoDespuesr2 = N'$row[FCEInfome]', @usuario_creacion = $auditor";
+            $result = $this->db->query($sql,$row);
+        }
+         if ($result) {
+             return true;
+         }
+         return false;
+     }
 
     function dboupdate($row) {
 		$sql = 'EXEC clientUpdate(?,?,?,?,?,?,?,?)';	

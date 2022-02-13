@@ -102,25 +102,37 @@ class Client extends BaseController
 
     public function insert(){
         $rules = [
-            'ruc' => ['rules' => 'required|min_length[4]|max_length[255]'],
+            'client[ruc]' => ['rules' => 'required|min_length[4]|max_length[255]'],
 			'razonSocial' => ['rules' => 'required|min_length[2]|max_length[255]'],
-            'nombreComercial' => ['rules' => 'required|min_length[2]|max_length[255]'],
-            'user' => ['rules' => 'required|min_length[4]|max_length[100]'],
-            'password' => [ 'label' => 'required']
+            'nombreComercial' => ['rules' => 'required|min_length[2]|max_length[255]']
         ];
-        if($this->validate($rules)){
+        if(!$this->validate($rules)){
             $ClientModel = new ClientModel();
+            
             $password=$this->generador();
+            $client=$this->request->getVar('client');
+            $user=$client->user;
+            $correo = ['password' => $password,'user'=>$user];
+            $view= '';//view('mail_view_createcliente', $correo);
+
             $data = [
-                'ruc'=> $this->request->getVar('ruc'),
-                'razonSocial' => $this->request->getVar('razonSocial'),
-                'nombreComercial'  => $this->request->getVar('nombreComercial'),
-                'user'  => $this->request->getVar('user'),
+                'ruc'=> $client->ruc,
+                'razonSocial' => $client->razonSocial,
+                'nombreComercial'  => $client->nombreComercial,
+                'user'  => $user,
+                'vigencia'  => $client->vigencia,
+                'correo'  => $client->correo,
                 'password'  => password_hash($password, PASSWORD_DEFAULT),
-                'idCreador'  => 0 //$this->request->getVar('idCreador')
+                'idCreador'  => 0,
+                'viewmail'  => $view,
+                'mail'  => '',
+                'consultor'  =>$client->consultor,
+                'terminos'  => $client->terminos
             ];
+            $rowsData=$this->request->getVar('rowsData');            
             if(isset($data['ruc']) && !empty($data['ruc'])){
                 $ClientModel->dboinsert($data);
+                $ClientModel->dbosegmentacionInsert($client->ruc,$client->consultor,$rowsData);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);
@@ -141,7 +153,7 @@ class Client extends BaseController
             $n = rand(0, $combLen);
             $pass.=$comb[$n];
         }
-        return $this->respond(['estado' =>$pass], 200);
+        return $pass;
     }
 
 }
