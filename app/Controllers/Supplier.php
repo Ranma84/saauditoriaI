@@ -17,6 +17,15 @@ class Supplier extends BaseController
         return $this->respond($supplier->select('ruc,razonSocial,nombreComercial,nombrePersonaContacto,TelefonoPersonaContacto')->findAll(), 200);
     }
 	
+    function getdb($id) {
+            $supplier = new SupplierModel;
+            $lista=$supplier->dboselectb($id)->getResult(); 
+            if(!empty($lista)){
+                return $this->respond($lista, 200);
+            }
+            return $this->respond(['error' => 'No hay datos'], 401); 
+        }
+
 	public function get($id=null){
         $supplier = new SupplierModel;
         $lista=$supplier->dboselect($id);
@@ -25,6 +34,8 @@ class Supplier extends BaseController
         }
         return $this->respond(['error' => 'No hay datos'], 401);    
     }
+
+   
 
     public function delete(){
         $rules = [

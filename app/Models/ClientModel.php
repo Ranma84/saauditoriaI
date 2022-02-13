@@ -43,11 +43,23 @@ class ClientModel extends Model
 
 
     function dboselect($id) {
-        $builder = $this->db->table('client');
-        $builder->select('client.ruc,client.razonSocial,client.nombreComercial,users.user');
-        $builder->join('users', 'users.idclient = client.ruc');
-        $builder->where('client.ruc',$id);
-        return $builder->get()->getRow(); 
+    $sql = "EXEC [dbo].[clientSelect] @ruc = N'$id'";
+    $query=$this->db->query($sql);
+    $cliente=null; 
+    $pase=true;
+        foreach ($query->getResultArray() as $row) {
+            if($pase){
+                $cliente['ruc']=$row['ruc'];
+                $cliente['razonSocial']=$row['razonSocial'];
+                $cliente['nombreComercial']=$row['nombreComercial'];
+                $cliente['correo']=$row['correo'];
+                $cliente['vigencia']=$row['vigencia'];
+                $cliente['consultor']=$row['consultor'];             
+                $pase=false; 
+            }
+            $cliente['detalle'][]=array('id'=>$row['id'],'idruc'=>$row['idruc'],'Nombre'=>$row['Nombre'],'tipo'=>$row['tipo'],'precio'=>$row['precio'],'plazoRegistroPago'=>$row['plazoRegistroPago'],'plazoIngresoRegistro'=>$row['plazoIngresoRegistro'],'plazoCierreAuditoria'=>$row['plazoCierreAuditoria'],'plazoCalificacionEntregaInforme'=>$row['plazoCalificacionEntregaInforme'],'auditoriaCampoDespuesr2'=>$row['auditoriaCampoDespuesr2']);
+        }
+        return $cliente;
 	}
 
     function dboinsert($row) {

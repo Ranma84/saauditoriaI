@@ -41,5 +41,31 @@ class SupplierModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-
+    function dboselectb($id) {
+        $sql = "SELECT TOP 1 [id]
+        ,[NUMERO_RUC]
+        ,[RAZON_SOCIAL]
+        ,[NOMBRE_COMERCIAL]
+        ,[ESTADO_CONTRIBUYENTE]
+        ,[CLASE_CONTRIBUYENTE]
+        ,[FECHA_INICIO_ACTIVIDADES]
+        ,[FECHA_ACTUALIZACION]
+        ,[FECHA_SUSPENSION_DEFINITIVA]
+        ,[FECHA_REINICIO_ACTIVIDADES]
+        ,[OBLIGADO]
+        ,[TIPO_CONTRIBUYENTE]
+        ,[NUMERO_ESTABLECIMIENTO]
+        ,[NOMBRE_FANTASIA_COMERCIAL]
+        ,[CALLE]
+        ,[INTERSECCION]
+        ,[ESTADO_ESTABLECIMIENTO]
+        ,[DESCRIPCION_PROVINCIA]
+        ,[DESCRIPCION_CANTON]
+        ,[DESCRIPCION_PARROQUIA]
+        ,[CODIGO_CIIU]
+        ,[ACTIVIDAD_ECONOMICA]
+    FROM [Auditoria].[dbo].[empresas_ruc]
+    WHERE [NUMERO_RUC]='$id' ORDER BY[RAZON_SOCIAL] DESC;";
+        return $this->db->query($sql);
+        }
 }
