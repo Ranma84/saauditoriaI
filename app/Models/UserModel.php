@@ -42,7 +42,7 @@ class UserModel extends Model
     protected $afterDelete    = [];
 
     function dboinsert($row) {
-		$sql = 'CALL userInsert(?,?,?,?,?,?,?)';
+		$sql = "EXECUTE userInsert '$row[user]','$row[email]','$row[telefono]','$row[password]','1','$row[idCreador]',,'$row[view]'";
 		$result = $this->db->query($sql,$row);	
 		if ($result) {
 			return true;

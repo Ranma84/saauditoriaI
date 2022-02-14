@@ -19,9 +19,9 @@ class Supplier extends BaseController
 	
     function getdb($id) {
             $supplier = new SupplierModel;
-            $lista=$supplier->dboselectb($id)->getResult(); 
+            $lista=$supplier->dboselectb($id); 
             if(!empty($lista)){
-                return $this->respond($lista, 200);
+                return $this->respond(['supplier' => $lista], 200);
             }
             return $this->respond(['error' => 'No hay datos'], 401); 
         }

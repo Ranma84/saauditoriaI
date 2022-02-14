@@ -74,7 +74,7 @@ class ClientModel extends Model
     function dbosegmentacionInsert($id,$auditor,$array) {
         foreach ($array as &$valor) {
             $row=(array)$valor;
-            $sql = "EXEC [dbo].[segmentacionInsert] @idruc = N'$id', @Nombre = N'$row[segmentos]', @tipo = N'r2',@precio = N'$row[costo]', @plazoRegistroPago = $row[FAC], @plazoIngresoRegistro = N'$row[cyei]', @plazoCierreAuditoria = N'$row[FDRegistro]', @plazoCalificacionEntregaInforme = $row[FCAuditoria], @auditoriaCampoDespuesr2 = N'$row[FCEInfome]', @usuario_creacion = $auditor";
+            $sql = "EXEC [dbo].[segmentacionInsert] @idruc = N'$id', @Nombre = N'$row[Nombre]', @tipo = N'$row[tipo]',@precio = N'$row[precio]', @plazoRegistroPago = $row[plazoRegistroPago], @plazoIngresoRegistro = N'$row[plazoIngresoRegistro]', @plazoCierreAuditoria = N'$row[plazoCierreAuditoria]', @plazoCalificacionEntregaInforme = $row[plazoCalificacionEntregaInforme], @auditoriaCampoDespuesr2 = N'$row[auditoriaCampoDespuesr2]', @usuario_creacion = $auditor";
             $result = $this->db->query($sql,$row);
         }
          if ($result) {

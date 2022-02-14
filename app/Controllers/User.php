@@ -100,30 +100,41 @@ class User extends BaseController
         }
 	}
 
+    public function generador(){
+        $comb = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&/()=-+?[]';
+        $pass = ''; 
+        $combLen = strlen($comb) - 1; 
+        for ($i = 0; $i < 8; ++$i) {
+            $n = rand(0, $combLen);
+            $pass.=$comb[$n];
+        }
+        return $pass;
+    }
+
     public function insert(){
         $rules = [
             'user' => ['rules' => 'required|min_length[4]|max_length[255]'],
-			'email' => ['rules' => 'required|min_length[4]|max_length[255]|valid_email'],
             'telefono' => ['rules' => 'required|min_length[4]|max_length[255]'],
-            'password' => ['rules' => 'required|min_length[4]|max_length[100]'],
-            'idCreador' => [ 'label' => 'required']
+            'email' => ['rules' => 'required|min_length[4]|max_length[100]']
         ];
         if($this->validate($rules)){
             $userModel = new UserModel();
-            $id = $this->request->getVar('id');
-            $idcliente=$this->request->getVar('idclient');
-    
+            $password=$this->generador();
+            $rol=$this->request->getVar('idrol');
+            $user=$this->request->getVar('user');
+            $correo = ['password' => $password,'user'=>$user,'rol'=>$rol];
+            $view=view('mail_view_createcliente', $correo);
             $data = [
                 'user'=> $this->request->getVar('user'),
                 'email' => $this->request->getVar('email'),
                 'telefono'  => $this->request->getVar('telefono'),
-                'password'  => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
-                'idCreador'  => $this->request->getVar('idCreador')
+                'idrol'  => $this->request->getVar('idrol'),
+                'password'  => password_hash($password, PASSWORD_DEFAULT),
+                'idCreador'  => $this->request->getVar('idCreador'),
+                'view' =>$view
             ];
             if(isset($data['user']) && !empty($data['user'])){
-                if(!empty($idcliente))
-                    $data['idclient']=$idcliente;
-                    $userModel->dboinsert($id, $data);
+                $userModel->dboinsert($data);
                 return $this->respond(['estado' => 'ok'], 200);
             }
             return $this->fail(print_r($model->errors()), 410);

@@ -119,7 +119,7 @@ class Client extends BaseController
                 'ruc'=> $client->ruc,
                 'razonSocial' => $client->razonSocial,
                 'nombreComercial'  => $client->nombreComercial,
-                'user'  => $user,
+                'user'  => $client->ruc,
                 'vigencia'  => $client->vigencia,
                 'correo'  => $client->correo,
                 'password'  => password_hash($password, PASSWORD_DEFAULT),
