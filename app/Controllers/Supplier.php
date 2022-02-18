@@ -17,7 +17,7 @@ class Supplier extends BaseController
         return $this->respond($supplier->select('ruc,razonSocial,nombreComercial,nombrePersonaContacto,TelefonoPersonaContacto')->findAll(), 200);
     }
 	
-    function getdb($id) {
+    function getdb($id) {            
             $supplier = new SupplierModel;
             $lista=$supplier->dboselectb($id); 
             if(!empty($lista)){
@@ -25,6 +25,29 @@ class Supplier extends BaseController
             }
             return $this->respond(['error' => 'No hay datos'], 401); 
         }
+
+    function dboselectcliente() {
+        $supplier = new SupplierModel;
+        $lista=$supplier->dboselectcliente(); 
+        if(!empty($lista)){
+            return $this->respond($lista, 200);
+        }
+        return $this->respond(['error' => 'No hay datos'], 401); 
+    }
+
+    function dboselectsegmento() {
+        $nombre=$this->request->getVar('nombre');
+        $supplier = new SupplierModel;
+        $lista=$supplier->dboselectsegmento($nombre); 
+        if(!empty($lista)){
+            return $this->respond($lista, 200);
+        }
+        return $this->respond(['error' => 'No hay datos'], 401); 
+    }
+
+
+    
+    
 
 	public function get($id=null){
         $supplier = new SupplierModel;
@@ -113,21 +136,49 @@ class Supplier extends BaseController
 
     public function insert(){
         $rules = [
-            'ruc' => ['rules' => 'required|min_length[4]|max_length[255]'],
-			'razonSocial' => ['rules' => 'required|min_length[2]|max_length[255]'],
-            'nombreComercial' => ['rules' => 'required|min_length[2]|max_length[255]'],
-            'user' => ['rules' => 'required|min_length[4]|max_length[100]'],
-            'password' => [ 'label' => 'required']
+            'ruc' => ['rules' => 'max_length[255]']
         ];
         if($this->validate($rules)){
             $SupplierModel = new SupplierModel();
+
+            $password=$this->generador();
+            $client=$this->request->getVar('client');
+            $correo = ['password' => $password,'user'=>$this->request->getVar('ruc')];
+            $view= view('mail_view_createcliente', $correo);
+
             $data = [
-                'ruc'=> $this->request->getVar('ruc'),
-                'razonSocial' => $this->request->getVar('razonSocial'),
-                'nombreComercial'  => $this->request->getVar('nombreComercial'),
-                'user'  => $this->request->getVar('user'),
-                'password'  => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
-                'idCreador'  => 0 //$this->request->getVar('idCreador')
+                'ruc'=> $this->request->getVar('ruc')
+                ,'idclient'=> $this->request->getVar('idclient')
+                ,'idSegmento'=> $this->request->getVar('idSegmento')
+                ,'razonSocial'=> $this->request->getVar('razonSocial')
+                ,'nombreComercial'=> $this->request->getVar('nombreComercial')
+                ,'direccion'=> $this->request->getVar('direccion')
+                ,'idPais'=> $this->request->getVar('idPais')
+                ,'provincia'=> $this->request->getVar('provincia')
+                ,'ciudad'=> $this->request->getVar('ciudad')
+                ,'direccionFactura'=> $this->request->getVar('direccionFactura')
+                ,'tipoContribuyente'=> $this->request->getVar('tipoContribuyente')
+                ,'actividadEmpresa'=> $this->request->getVar('actividadEmpresa')
+                ,'actividadEspecifica'=> $this->request->getVar('actividadEspecifica')
+                ,'telefono'=> $this->request->getVar('telefono')
+                ,'fechaFacturacion'=> $this->request->getVar('fechaFacturacion')
+                ,'nombrePersonaContacto'=> $this->request->getVar('nombrePersonaContacto')
+                ,'cargoPersonaContacto'=> $this->request->getVar('cargoPersonaContacto')
+                ,'TelefonoPersonaContacto'=> $this->request->getVar('TelefonoPersonaContacto')
+                ,'mailPersonaContacto'=> $this->request->getVar('mailPersonaContacto')
+                ,'codigoActivacion'=> $this->request->getVar('codigoActivacion')
+                ,'created_user'=> 1
+                ,'mailPersonaFacturacion'=> $this->request->getVar('mailPersonaFacturacion')
+                ,'TelefonoPersonaFacturacion'=> $this->request->getVar('TelefonoPersonaFacturacion')
+                ,'CargoPersonaFacturacion'=> $this->request->getVar('CargoPersonaFacturacion')
+                ,'NombrePersonaFacturacion'=> $this->request->getVar('NombrePersonaFacturacion')
+                ,'NombrePersonaauditoria'=> $this->request->getVar('NombrePersonaauditoria')
+                ,'mailPersonaauditoria'=> $this->request->getVar('mailPersonaauditoria')
+                ,'TelefonoPersonaauditoria'=> $this->request->getVar('TelefonoPersonaauditoria')
+                ,'CargoPersonaauditoria'=> $this->request->getVar('CargoPersonaauditoria')
+                ,'idCreador'=> 1
+                ,'mail'=> $view
+                ,'password' =>$password
             ];
             if(isset($data['ruc']) && !empty($data['ruc'])){
                 $SupplierModel->dboinsert($data);
@@ -141,6 +192,17 @@ class Supplier extends BaseController
             ];
             return $this->fail($response , 409);
         }
+    }
+
+    public function generador(){
+        $comb = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&/()=-+?[]';
+        $pass = ''; 
+        $combLen = strlen($comb) - 1; 
+        for ($i = 0; $i < 8; ++$i) {
+            $n = rand(0, $combLen);
+            $pass.=$comb[$n];
+        }
+        return $pass;
     }
 
 }

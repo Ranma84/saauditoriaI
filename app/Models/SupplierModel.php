@@ -74,5 +74,31 @@ class SupplierModel extends Model
     FROM [Auditoria].[dbo].[empresas_ruc]
     WHERE [NUMERO_RUC]='$id' ORDER BY[RAZON_SOCIAL] DESC;";
         return $this->db->query($sql)->getRow();
-        }
+    }
+
+    function dboselectcliente() {
+        $sql = "SELECT  [razonSocial] AS name, [ruc] AS id  FROM [Auditoria].[dbo].[client] WHERE [estado]=1 ORDER BY razonSocial ASC;";
+        return $this->db->query($sql)->getResult();
+    }
+
+    function dboinsert($row) {
+        $sql = "[dbo].[supplierInsert] @ruc = N'$row[ruc]',@idclient = N'$row[idclient]',@idSegmento = $row[idSegmento],@razonSocial = N'$row[razonSocial]', @nombreComercial = N'$row[nombreComercial]',@direccion = N'$row[direccion]', @idPais = $row[idPais],@provincia = N'$row[provincia]', @ciudad = N'$row[ciudad]',@direccionFactura = N'$row[direccionFactura]', @tipoContribuyente = N'$row[tipoContribuyente]',@actividadEmpresa = N'$row[actividadEmpresa]', @actividadEspecifica = N'$row[actividadEspecifica]',@telefono = N'$row[telefono]', @fechaFacturacion = N'$row[fechaFacturacion]',@nombrePersonaContacto = N'$row[nombrePersonaContacto]', @cargoPersonaContacto = N'$row[cargoPersonaContacto]',@TelefonoPersonaContacto = N'$row[TelefonoPersonaContacto]', @mailPersonaContacto = N'$row[mailPersonaContacto]',@codigoActivacion = N'$row[codigoActivacion]', @created_user = N'$row[created_user]',@mailPersonaFacturacion = N'$row[mailPersonaFacturacion]',@TelefonoPersonaFacturacion = N'$row[TelefonoPersonaFacturacion]',@CargoPersonaFacturacion = N'$row[CargoPersonaFacturacion]',@NombrePersonaFacturacion = N'$row[NombrePersonaFacturacion]',@NombrePersonaauditoria = N'$row[NombrePersonaauditoria]',@mailPersonaauditoria = N'$row[mailPersonaauditoria]',@TelefonoPersonaauditoria = N'$row[TelefonoPersonaauditoria]',@CargoPersonaauditoria = N'$row[CargoPersonaauditoria]',@idCreador = $row[idCreador],@mail = N'$row[mail]',@password = N'$row[password]';";
+        $result = $this->db->query($sql);
+        if ($result) {
+			return true;
+		}
+		return false;
+    }
+
+    function dboselectsegmento($id) {
+        $sql = "SELECT [id],[Nombre]
+        FROM [Auditoria].[dbo].[Segmentacion]
+        INNER JOIN [dbo].[client] ON [Segmentacion].idruc=[client].ruc
+        WHERE [client].[razonSocial]='$id'";
+        return $this->db->query($sql)->getResult();
+        
+    }
+
+
+    
 }

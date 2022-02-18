@@ -54,7 +54,8 @@ class ClientModel extends Model
                 $cliente['nombreComercial']=$row['nombreComercial'];
                 $cliente['correo']=$row['correo'];
                 $cliente['vigencia']=$row['vigencia'];
-                $cliente['consultor']=$row['consultor'];             
+                $cliente['consultor']=$row['consultor'];
+                $cliente['consultorestext']=$row['consultorestext'];            
                 $pase=false; 
             }
             $cliente['detalle'][]=array('id'=>$row['id'],'idruc'=>$row['idruc'],'Nombre'=>$row['Nombre'],'tipo'=>$row['tipo'],'precio'=>$row['precio'],'plazoRegistroPago'=>$row['plazoRegistroPago'],'plazoIngresoRegistro'=>$row['plazoIngresoRegistro'],'plazoCierreAuditoria'=>$row['plazoCierreAuditoria'],'plazoCalificacionEntregaInforme'=>$row['plazoCalificacionEntregaInforme'],'auditoriaCampoDespuesr2'=>$row['auditoriaCampoDespuesr2']);
@@ -63,7 +64,7 @@ class ClientModel extends Model
 	}
 
     function dboinsert($row) {
-       $sql = "EXEC [dbo].[clientInsert] @ruc = N'$row[ruc]', @razonSocial = N'$row[razonSocial]', @nombreComercial = N'$row[nombreComercial]',@user = N'$row[user]', @vigencia = $row[vigencia], @correo = N'$row[correo]', @password = N'$row[password]', @idCreador = $row[idCreador], @mail = N'$row[mail]', @consultor = $row[consultor], @terminos = N'$row[terminos]'";
+       $sql = "EXEC [dbo].[clientInsert] @ruc = N'$row[ruc]', @razonSocial = N'$row[razonSocial]', @nombreComercial = N'$row[nombreComercial]',@user = N'$row[user]', @vigencia = $row[vigencia], @correo = N'$row[correo]', @password = N'$row[password]', @idCreador = $row[idCreador], @mail = N'$row[mail]', @consultor = '$row[consultor]', @terminos = N'$row[terminos]'";
        $result = $this->db->query($sql,$row);	
 		if ($result) {
 			return true;
@@ -112,4 +113,25 @@ class ClientModel extends Model
 		}
 		return false;
 	}
+
+    function dboselectb($id) {
+        $sql = "SELECT TOP 1 [NUMERO_RUC] AS ruc
+        ,[RAZON_SOCIAL] AS razonSocial
+        ,[NOMBRE_COMERCIAL] AS nombreComercial
+        ,'' as [user]
+        ,'12' as vigencia
+        ,'' as correo
+        ,'0' as consultor
+        ,'' as terminos
+    FROM [Auditoria].[dbo].[empresas_ruc]
+    WHERE [NUMERO_RUC]='$id' ORDER BY[RAZON_SOCIAL] DESC;";
+        return $this->db->query($sql)->getRow();
+    }
+
+    function dboselectConsultores() {
+        $sql = "SELECT [user],[id]
+        FROM [Auditoria].[dbo].[users]
+        where [idrol]=2 ORDER BY [user];";
+        return $this->db->query($sql)->getResult();
+    }
 }

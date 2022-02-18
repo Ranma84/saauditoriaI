@@ -26,6 +26,15 @@ class User extends BaseController
         return $this->respond(['error' => 'No hay datos'], 401);    
     }
 
+    public function roles(){
+        $users = new UserModel;
+        $lista=$users->query('SELECT [id],[rol] FROM [Auditoria].[dbo].[rol] WHERE [estado]=1 AND id <=1003;')->getResult();
+        if(!empty($lista)){
+            return $this->respond($lista, 200);
+        }
+        return $this->respond(['error' => 'No hay datos'], 401);    
+    }
+
     public function delete(){
         $rules = [
             'id' => ['rules' => 'required'],
@@ -120,7 +129,7 @@ class User extends BaseController
         if($this->validate($rules)){
             $userModel = new UserModel();
             $password=$this->generador();
-            $rol=$this->request->getVar('idrol');
+            $rol=$this->request->getVar('rol');
             $user=$this->request->getVar('user');
             $correo = ['password' => $password,'user'=>$user,'rol'=>$rol];
             $view=view('mail_view_createcliente', $correo);
@@ -128,7 +137,7 @@ class User extends BaseController
                 'user'=> $this->request->getVar('user'),
                 'email' => $this->request->getVar('email'),
                 'telefono'  => $this->request->getVar('telefono'),
-                'idrol'  => $this->request->getVar('idrol'),
+                'idrol'  => $this->request->getVar('rol'),
                 'password'  => password_hash($password, PASSWORD_DEFAULT),
                 'idCreador'  => $this->request->getVar('idCreador'),
                 'view' =>$view

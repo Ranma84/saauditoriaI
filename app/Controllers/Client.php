@@ -113,7 +113,7 @@ class Client extends BaseController
             $client=$this->request->getVar('client');
             $user=$client->user;
             $correo = ['password' => $password,'user'=>$user];
-            $view= '';//view('mail_view_createcliente', $correo);
+            $view= view('mail_view_createcliente', $correo);
 
             $data = [
                 'ruc'=> $client->ruc,
@@ -155,5 +155,27 @@ class Client extends BaseController
         }
         return $pass;
     }
+
+    function getdb($id) {
+        $ClientModel = new ClientModel();
+        $lista=$ClientModel->dboselectb($id); 
+        if(!empty($lista)){
+            return $this->respond(['client' => $lista], 200);
+        }
+        return $this->respond(['client'=>array('ruc'=>'','razonSocial'=>'','nombreComercial'=>'','user'=>'','razonSocial'=>'','vigencia'=>'','correo'=>'','consultor'=>'','terminos'=>'')], 200);
+
+    }
+
+    function dboselectConsultores() {
+        $ClientModel = new ClientModel();
+        $lista=$ClientModel->dboselectConsultores(); 
+        if(!empty($lista)){
+            return $this->respond($lista, 200);
+        }
+        return $this->respond(['error' => 'No hay datos'], 401); 
+
+    }
+
+    
 
 }
