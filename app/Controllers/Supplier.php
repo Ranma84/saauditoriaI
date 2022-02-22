@@ -23,7 +23,36 @@ class Supplier extends BaseController
             if(!empty($lista)){
                 return $this->respond(['supplier' => $lista], 200);
             }
-            return $this->respond(['error' => 'No hay datos'], 401); 
+        $lista=array('ruc'=>$id
+        ,'razonSocial'=>'1'
+        ,'nombreComercial'=>'1'
+        ,'ESTADO_CONTRIBUYENTE'=>'1' 
+        ,'CLASE_CONTRIBUYENTE'=>'1'
+        ,'FECHA_INICIO_ACTIVIDADES'=>'1'
+        ,'FECHA_ACTUALIZACION'=>'1'
+        ,'FECHA_SUSPENSION_DEFINITIVA'=>'1'
+        ,'FECHA_REINICIO_ACTIVIDADES'=>'1'
+        ,'OBLIGADO'=>'1'
+        ,'tipoContribuyente'=>'1'
+        ,'NUMERO_ESTABLECIMIENTO'=>'1'
+        ,'NOMBRE_FANTASIA_COMERCIAL'=>'1'
+        ,'direccionFactura'=>'1'
+        ,'INTERSECCION'=>'1'
+        ,'ESTADO_ESTABLECIMIENTO'=>'1'
+        ,'vprovincia'=>'1'
+        ,'ciudad'=>'1'
+        ,'DESCRIPCION_PARROQUIA'=>'1'
+        ,'CODIGO_CIIU'=>'1'
+        ,'actividadEmpresa'=>'1'
+        ,'actividadEspecifica'=>'1'
+        ,'idPais'=>'1'
+        ,'telefono'=>'1'
+        ,'fechaFacturacion'=>'1'
+        ,'nombrePersonaContacto'=>'1'
+        ,'AS cargoPersonaContacto'=>'1'
+        ,'TelefonoPersonaContacto'=>'1'
+        ,'mailPersonaContacto'=>'1');
+            return $this->respond(['supplier' => $lista], 401); 
         }
 
     function dboselectcliente() {
@@ -47,8 +76,6 @@ class Supplier extends BaseController
 
 
     
-    
-
 	public function get($id=null){
         $supplier = new SupplierModel;
         $lista=$supplier->dboselect($id);

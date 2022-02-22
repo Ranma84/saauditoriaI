@@ -41,6 +41,45 @@ class SupplierModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function dboselect($id) {
+        $sql = "SELECT [supplier].[ruc]
+        ,[supplier].[idclient]
+        ,[client].razonSocial AS ClientRazonSocial
+        ,[supplier].[idSegmento]
+        ,[Segmentacion].[Nombre] AS SegmentacionNombre 
+        ,[supplier].[razonSocial]
+        ,[supplier].[nombreComercial]
+        ,[supplier].[direccion]
+        ,[supplier].[idPais]
+        ,[supplier].[provincia]
+        ,[supplier].[ciudad]
+        ,[supplier].[direccionFactura]
+        ,[supplier].[tipoContribuyente]
+        ,[supplier].[actividadEmpresa]
+        ,[supplier].[actividadEspecifica]
+        ,[supplier].[telefono]
+        ,[supplier].[fechaFacturacion]
+        ,[supplier].[nombrePersonaContacto]
+        ,[supplier].[cargoPersonaContacto]
+        ,[supplier].[TelefonoPersonaContacto]
+        ,[supplier].[mailPersonaContacto]
+        ,[supplier].[codigoActivacion]
+        ,[supplier].[estado]
+        ,[supplier].[mailPersonaFacturacion]
+        ,[supplier].[TelefonoPersonaFacturacion]
+        ,[supplier].[CargoPersonaFacturacion]
+        ,[supplier].[NombrePersonaFacturacion]
+        ,[supplier].[NombrePersonaauditoria]
+        ,[supplier].[mailPersonaauditoria]
+        ,[supplier].[TelefonoPersonaauditoria]
+        ,[supplier].[CargoPersonaauditoria]
+    FROM [Auditoria].[dbo].[supplier]
+    INNER JOIN [dbo].[client] ON  [supplier].[idclient]=[client].ruc
+    LEFT JOIN [dbo].[Segmentacion] ON [Segmentacion].[id]=[supplier].[idSegmento]
+    WHERE [supplier].[ruc]='$id';";
+        return $this->db->query($sql)->getRow();
+    }
+
     function dboselectb($id) {
         $sql = "SELECT TOP 1 [NUMERO_RUC] AS ruc
         ,[RAZON_SOCIAL] AS razonSocial
